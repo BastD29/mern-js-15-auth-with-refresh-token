@@ -28,7 +28,15 @@ export const authApi = createApi({
         token: response.accessToken,
       }),
     }),
+    refreshToken: builder.mutation({
+      query: (refreshToken) => ({
+        url: "/auth/refreshToken",
+        method: "POST",
+        body: { token: refreshToken },
+      }),
+    }),
   }),
 });
 
-export const { useSignupMutation, useLoginMutation } = authApi;
+export const { useSignupMutation, useLoginMutation, useRefreshTokenMutation } =
+  authApi;

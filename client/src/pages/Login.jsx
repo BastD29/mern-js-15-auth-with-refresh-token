@@ -2,7 +2,10 @@
 import React, { useState } from "react";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useLoginMutation } from "../store/auth/apiSlice";
+import {
+  useLoginMutation,
+  // useRefreshTokenMutation,
+} from "../store/auth/apiSlice2";
 import { setUser } from "../store/auth/slice";
 
 const Login = () => {
@@ -10,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const [login, { isLoading, isError }] = useLoginMutation();
+  // const [refreshToken] = useRefreshTokenMutation();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,6 +25,7 @@ const Login = () => {
       const userData = await login({ email, password }).unwrap();
       console.log("login submitted data:", userData);
       localStorage.setItem("token", userData.token);
+      localStorage.setItem("refreshToken", userData.user.refreshToken);
       dispatch(setUser({ user: userData.user, token: userData.token }));
       navigate("/profile");
     } catch (error) {

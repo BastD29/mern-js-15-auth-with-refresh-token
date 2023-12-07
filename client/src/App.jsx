@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import UserProfile from "./pages/Profile";
+import Profile from "./pages/Profile";
 import { Signup } from "./pages/Signup";
 
 export default function App() {
@@ -13,7 +13,7 @@ export default function App() {
         path="/profile"
         element={
           <ProtectedRoute>
-            <UserProfile />
+            <Profile />
           </ProtectedRoute>
         }
       />

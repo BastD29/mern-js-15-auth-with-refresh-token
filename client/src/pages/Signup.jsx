@@ -22,6 +22,8 @@ const Signup = () => {
       console.log("signup submitted data:", userData);
       localStorage.setItem("token", userData.token);
       dispatch(setUser({ user: userData.user, token: userData.token }));
+      // localStorage.setItem("token", userData.accessToken);
+      // dispatch(setUser({ user: userData.user, token: userData.accessToken }));
       navigate("/profile");
     } catch (error) {
       console.error("Failed to login:", error);

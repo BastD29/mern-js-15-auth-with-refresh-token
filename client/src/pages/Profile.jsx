@@ -1,4 +1,4 @@
-import { useGetMeQuery } from "../store/user/apiSlice";
+import { useGetMeQuery } from "../store/user/apiSlice2";
 
 const Profile = () => {
   const { data: userData, error, isLoading } = useGetMeQuery();
