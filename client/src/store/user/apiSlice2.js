@@ -5,7 +5,7 @@ import { logout } from "../auth/slice";
 const baseQuery = fetchBaseQuery({
   baseUrl: "/api",
   prepareHeaders: (headers, { getState }) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
@@ -21,6 +21,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   console.log("extraOptions:", extraOptions);
 
   if (result?.error?.status === 401) {
+    // console.log("refresh token:", localStorage.getItem("refreshToken"));
     const refreshResult = await baseQuery(
       {
         url: "/auth/refreshToken",
@@ -35,12 +36,14 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 
     if (refreshResult?.data) {
       localStorage.setItem("accessToken", refreshResult.data.accessToken);
+      localStorage.setItem("refreshToken", refreshResult.data.refreshToken);
       result = await baseQuery(args, api, extraOptions);
+      console.log("result:", result);
     } else {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      // dispatch(logout());
-      api.dispatch(logout()); // to use in case you are not in a component (hooks usable only in component)
+
+      api.dispatch(logout()); // to use in case you are not in a component (reminder: hooks are usable only in components)
     }
   }
 

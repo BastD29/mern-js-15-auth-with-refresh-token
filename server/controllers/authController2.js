@@ -57,7 +57,7 @@ const signup = asyncHandler(async (req, res) => {
 const refreshToken = asyncHandler(async (req, res) => {
   // * using the body to send the refresh token
   const { token: refreshToken } = req.body;
-  // console.log("refreshToken:", refreshToken);
+  console.log("refreshToken:", refreshToken);
 
   // * using the header to send the refresh token (recommended approach)
   // const authHeader = req.headers.authorization;
@@ -78,13 +78,16 @@ const refreshToken = asyncHandler(async (req, res) => {
 
   try {
     const decoded = verifyRefreshToken(refreshToken);
+    console.log("decoded:", decoded);
     const userId = decoded.id;
     if (!userId) {
       return res.status(404).json({ message: "No user found with this token" });
     }
 
     const newAccessToken = generateAccessToken(userId);
+    console.log("newAccessToken:", newAccessToken);
     const newRefreshToken = generateRefreshToken(userId);
+    console.log("newRefreshToken:", newRefreshToken);
 
     existingToken.token = newRefreshToken;
     await existingToken.save();
@@ -94,7 +97,7 @@ const refreshToken = asyncHandler(async (req, res) => {
       refreshToken: newRefreshToken,
     });
   } catch (error) {
-    return res.status(403).json({ message: "Invalid Refresh Token" });
+    return res.status(403).json({ message: "Invalid refresh token" });
   }
 });
 
