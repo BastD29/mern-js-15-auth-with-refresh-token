@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../store/auth/apiSlice";
 import { setUser } from "../store/auth/slice";
 import { useState } from "react";
@@ -20,15 +20,22 @@ const Signup = () => {
     try {
       const userData = await signup({ name, email, password }).unwrap();
       console.log("signup submitted data:", userData);
-      localStorage.setItem("token", userData.token);
+      localStorage.setItem("accessToken", userData.token);
+      localStorage.setItem("refreshToken", userData.user.refreshToken);
       dispatch(setUser({ user: userData.user, token: userData.token }));
-      // localStorage.setItem("token", userData.accessToken);
-      // dispatch(setUser({ user: userData.user, token: userData.accessToken }));
       navigate("/profile");
     } catch (error) {
-      console.error("Failed to login:", error);
+      console.error("Failed to signup:", error);
     }
   };
+
+  const location = useLocation();
+
+  const jwt = localStorage.getItem("accessToken");
+
+  if (jwt) {
+    return <Navigate to={"/profile"} state={{ from: location }} replace />;
+  }
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -40,7 +47,7 @@ const Signup = () => {
   return (
     <>
       <h2>Signup</h2>
-      {isError && <p>Failed to login. Check your credentials.</p>}
+      {isError && <p>Failed to signup. Check your credentials.</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
