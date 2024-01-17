@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
-import { useLoginMutation } from "../store/auth/apiSlice2";
+
+import { useLoginMutation } from "../store/auth/apiSlice";
+
 import { setUser } from "../store/auth/slice";
 
 const Login = () => {

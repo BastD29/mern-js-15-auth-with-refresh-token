@@ -1,6 +1,9 @@
 import { useDispatch } from "react-redux";
-import { useGetMeQuery } from "../store/user/apiSlice2";
+
+import { useGetMeQuery } from "../store/user/apiSlice";
+
 import { logout } from "../store/auth/slice";
+
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {

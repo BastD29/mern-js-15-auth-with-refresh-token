@@ -42,6 +42,13 @@ const signup = asyncHandler(async (req, res) => {
   });
 
   if (user) {
+    console.log("Signup success:", {
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      accessToken,
+      refreshToken,
+    });
     res.status(201).json({
       _id: user.id,
       name: user.name,
@@ -50,6 +57,7 @@ const signup = asyncHandler(async (req, res) => {
       refreshToken,
     });
   } else {
+    console.log("Signup failed: Invalid user data");
     res.status(400);
     throw new Error("Invalid user data");
   }
